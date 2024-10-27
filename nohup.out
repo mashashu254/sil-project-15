@@ -1,0 +1,9 @@
+[2024-10-27 05:08:25 +0000] [161952] [INFO] Starting gunicorn 23.0.0
+[2024-10-27 05:08:25 +0000] [161952] [INFO] Listening at: http://127.0.0.1:8000 (161952)
+[2024-10-27 05:08:25 +0000] [161952] [INFO] Using worker: sync
+[2024-10-27 05:08:25 +0000] [161953] [INFO] Booting worker with pid: 161953
+[2024-10-27 05:08:25 +0000] [161954] [INFO] Booting worker with pid: 161954
+[2024-10-27 05:08:25 +0000] [161955] [INFO] Booting worker with pid: 161955
+Not Found: /api/
+Not Found: /api/
+Not Found: /api/
