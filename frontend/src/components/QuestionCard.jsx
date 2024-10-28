@@ -16,7 +16,8 @@ const QuestionCard = ({ question, selectedOption, onAnswer }) => {
 							/>
 							{option}
 						</label>
-					))}
+				))}
+				
 				{question.type === 'checkbox' &&
 					question.options.map((option) => (
 						<label key={option}>
@@ -24,11 +25,12 @@ const QuestionCard = ({ question, selectedOption, onAnswer }) => {
 								type="checkbox"
 								name={question.id}
 								value={option}
+								checked={selectedOption === option}
 								onChange={() => onAnswer(option)}
 							/>
 							{option}
 						</label>
-					))}
+				))}
 			</div>
 		</div>
 	);
