@@ -11,7 +11,8 @@ const QuestionCard = ({ question, selectedOption, onAnswer }) => {
 								type="radio"
 								name={question.id}
 								value={option}
-								onChange={selectedOption === option}
+								checked={selectedOption === option}
+								onChange={() => onAnswer(option)}
 							/>
 							{option}
 						</label>
@@ -21,9 +22,9 @@ const QuestionCard = ({ question, selectedOption, onAnswer }) => {
 						<label key={option}>
 							<input
 								type="checkbox"
-								name={currentQuestion.id}
+								name={question.id}
 								value={option}
-								onChange={handleInputChange}
+								onChange={() => onAnswer(option)}
 							/>
 							{option}
 						</label>
