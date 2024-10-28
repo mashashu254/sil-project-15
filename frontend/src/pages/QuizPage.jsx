@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../App.css';
 import useSurveyData from '../hooks/useSurveyData.js';
 import QuestionCard from '../components/QuestionCard.jsx';
 import PlanDisplay from '../components/PlanDisplay.jsx';
