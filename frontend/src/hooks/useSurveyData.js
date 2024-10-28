@@ -9,17 +9,26 @@ const useSurveyData = () => {
 	const [isCompleted, setIsCompleted] = useState(false);
 	const [generatedPlan, setGeneratedPlan] = useState('');
 	const [adviceOutput, setAdviceOutput] = useState('');
+	const totalQuestions = questions.length
 
 
-
+	// Load saved answers from localStorage
 	useEffect(() => {
-		// You can add any initialization logic here
-		// For example, loading saved answers from localStorage
 		const savedAnswers = localStorage.getItem('surveyAnswers');
+		const savedQuestionIndex = localStorage.getItem('currentQuestionIndex');
 		if (savedAnswers) {
 			setAnswers(JSON.parse(savedAnswers));
 		}
+		if (savedQuestionIndex) {
+			setCurrentQuestionIndex(parseInt(savedQuestionIndex, 10));
+		}
 	}, []);
+
+	// Save progress to localStorage
+	useEffect(() => {
+		localStorage.setItem('surveyAnswers', JSON.stringify(answers));
+		localStorage.setItem('currentQuestionIndex', currentQuestionIndex.toString());
+	}, [answers, currentQuestionIndex])
 
 
 	const generatePlan = () => {
@@ -239,18 +248,11 @@ const useSurveyData = () => {
 
 	const currentQuestion = questions[currentQuestionIndex];
 
-	const handleAnswer = (answer) => {
-		const newAnswers = { ...answers, [currentQuestion.id]: answer };
-		setAnswers(newAnswers);
-
-		// Save answers to localStorage
-		localStorage.setItem('surveyAnswers', JSON.stringify(newAnswers));
-
-		if (currentQuestionIndex < questions.length - 1) {
-			setCurrentQuestionIndex(currentQuestionIndex + 1);
-		} else {
-			setIsCompleted(true);
-		}
+	const handleAnswer = (questionId, answer) => {
+		setAnswers(prevAnswers => ({
+			...prevAnswers,
+			[questionId]: answer
+		}));
 	};
 
 	const goToPreviousQuestion = () => {
@@ -271,6 +273,10 @@ const useSurveyData = () => {
 		setIsCompleted(false);
 		localStorage.removeItem('surveyAnswers');
 	};
+
+	const calculateProgress = () => {
+		return ((currentQuestionIndex + 1) / totalQuestions) * 100;	
+	}
 
 	return {
 		currentQuestion: questions[currentQuestionIndex],
