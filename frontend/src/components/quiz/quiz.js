@@ -1,7 +1,7 @@
-import '../../App.css';
+import '../../styles/App.css';
 import React, { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { questions } from './questions.js';
+import { questions } from '../../data/questions.js';
 import { API_KEY } from '../../api_key.js';
 import {
 	academicLinks,
