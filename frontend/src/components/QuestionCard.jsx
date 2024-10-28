@@ -5,7 +5,7 @@ const QuestionCard = ({ question, selectedOption, onAnswer }) => {
 		<div>
 			<p>{question.question}</p>
 			<div className="questions" id="answer-container">
-				{question.type === 'checkbox' && question.options.map((option) => (
+				{question.type === 'radio' && question.options.map((option) => (
 						<label key={option}>
 							<input
 								type="radio"
@@ -17,7 +17,6 @@ const QuestionCard = ({ question, selectedOption, onAnswer }) => {
 							{option}
 						</label>
 				))}
-				
 				{question.type === 'checkbox' &&
 					question.options.map((option) => (
 						<label key={option}>

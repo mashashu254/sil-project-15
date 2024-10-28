@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { questions } from '../data/questions';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
+import { academicLinks, careerGuides, varsityResources, socialLifeOptions, extracurricularClubs } from "../data/temp_plan"; 
+
+const apiKey = API_KEY || 'dummy_key';
 
 const useSurveyData = () => {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -9,8 +12,11 @@ const useSurveyData = () => {
 	const [isCompleted, setIsCompleted] = useState(false);
 	const [generatedPlan, setGeneratedPlan] = useState('');
 	const [adviceOutput, setAdviceOutput] = useState('');
+	const [responses, ] = useState({});
+	const [, setShowAdvice] = useState(false);
+	const [reviseInput, ] = useState('');
+	const [, setError] = useState('');
 	const totalQuestions = questions.length
-
 
 	// Load saved answers from localStorage
 	useEffect(() => {
@@ -41,10 +47,7 @@ const useSurveyData = () => {
 		}
 
 		// Academic Interests (if "Courses" or "Extracurriculars" is the top priority)
-		if (
-			(responses.priority === 'Courses' || responses.priority === 'Extracurriculars') &&
-			responses.academic_interests &&
-			responses.academic_interests.length > 0
+		if ((responses.priority === 'Courses' || responses.priority === 'Extracurriculars') && responses.academic_interests && responses.academic_interests.length > 0
 		) {
 			plan += `<h3> Academic Interests </h3>`;
 			responses.academic_interests.forEach((broadCategory) => {
@@ -246,7 +249,6 @@ const useSurveyData = () => {
 		}
 	};
 
-	const currentQuestion = questions[currentQuestionIndex];
 
 	const handleAnswer = (questionId, answer) => {
 		setAnswers(prevAnswers => ({
@@ -290,6 +292,8 @@ const useSurveyData = () => {
 		goToPreviousQuestion,
 		resetSurvey,
 		requestAdvice,
+		calculateProgress,
+		totalQuestions,
 		revisePlan,
 	};
 };

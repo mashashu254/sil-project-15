@@ -7,7 +7,7 @@ const Header = () => {
 	useEffect(() => {
 		const handleScroll = () => {
 			// Check if the user has scrolled down
-			setIsScrolled(window.scrollY > 0);"/path-to-yale-logo.png"
+			setIsScrolled(window.scrollY > 0);
 		};
 
 		window.addEventListener('scroll', handleScroll);

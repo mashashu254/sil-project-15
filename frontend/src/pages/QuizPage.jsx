@@ -11,11 +11,12 @@ const QuizPage = () => {
 		currentQuestion,
 		answers,
 		isCompleted,
-		generatePlan,
 		generatedPlan,
 		adviceOutput,
 		handleAnswer,
 		goToNextQuestion,
+		totalQuestions,
+		calculateProgress,
 		requestAdvice,
 		revisePlan
 	} = useSurveyData()
@@ -34,19 +35,16 @@ const QuizPage = () => {
 					onAnswer={(answer) => handleAnswer(currentQuestion.id, answer)}
 				/>
 				<button onClick={goToNextQuestion} className="capitalize">
-					{currentQuestion.id === totalQuestion - 1 ? 'submit' : 'next'}
+					{currentQuestion.id === totalQuestions - 1 ? 'Submit' : 'Next'}
 				</button>
 			</div>
+
+			
 		)
 	} else {
 		// To render completion page or generate plan
-		return <div>Survey Completed!</div>
-	}
-
-
-	// Revise the generated plan based on user input
-	return (
-		<div className="results-container">
+		return (
+			<div className="results-container">
 			<PlanDisplay plan={generatedPlan} />
 			<div className='revise-plan'>
 				<h3>
@@ -68,7 +66,8 @@ const QuizPage = () => {
 				requestAdvice={requestAdvice}
 			/>
 		</div>
-	);
+		)
+	}
 };
 
 export default QuizPage;

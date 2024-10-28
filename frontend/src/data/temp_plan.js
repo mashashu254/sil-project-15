@@ -83,6 +83,7 @@ const careerGuides = {
 };
 
 // Popular courses in each department
+//eslint-disable-next-line
 const popularCourses = {
 	'Computer Science': ['CS50: Introduction to Computer Science', 'CS323: Introduction to Systems Programming'],
 	Economics: ['ECON110: Principles of Economics', 'ECON115: Intermediate Microeconomics'],
