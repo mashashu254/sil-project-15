@@ -1,53 +1,96 @@
 import { useState, useEffect } from 'react';
+import { useSurveyContext } from '../context/SurveyContext';
 import { questions } from '../data/questions';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
-import { academicLinks, careerGuides, varsityResources, socialLifeOptions, extracurricularClubs } from "../data/temp_plan"; 
+import {
+	academicLinks,
+	careerGuides,
+	varsityResources,
+	socialLifeOptions,
+	extracurricularClubs,
+} from '../data/temp_plan';
 
 const apiKey = API_KEY || 'dummy_key';
+const localStorageKey = 'userSurveyData';
 
 const useSurveyData = () => {
+	const {
+		// currentQuestion,
+		answers,
+		isCompleted,
+		handleAnswer,
+		goToPreviousQuestion,
+		goToNextQuestion,
+		totalQuestions,
+		calculateProgress,
+	} = useSurveyContext();
+
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [answers, setAnswers] = useState({});
-	const [isCompleted, setIsCompleted] = useState(false);
+	const [responses, setResponses] = useState({});
+	const [setIsCompleted] = useState(false);
 	const [generatedPlan, setGeneratedPlan] = useState('');
 	const [adviceOutput, setAdviceOutput] = useState('');
-	const [responses, ] = useState({});
 	const [, setShowAdvice] = useState(false);
-	const [reviseInput, ] = useState('');
+	const [reviseInput] = useState('');
 	const [, setError] = useState('');
-	const totalQuestions = questions.length
+	const [welcomeBack, setWelcomeBack] = useState(false);
 
 	// Load saved answers from localStorage
 	useEffect(() => {
-		const savedAnswers = localStorage.getItem('surveyAnswers');
+		const savedData = localStorage.getItem(localStorageKey);
 		const savedQuestionIndex = localStorage.getItem('currentQuestionIndex');
-		if (savedAnswers) {
-			setAnswers(JSON.parse(savedAnswers));
-		}
-		if (savedQuestionIndex) {
-			setCurrentQuestionIndex(parseInt(savedQuestionIndex, 10));
+		if (savedData) {
+			setResponses(savedData.responses || {});
+			setCurrentQuestionIndex(savedData.currentQuestionIndex || 0);
+			setGeneratedPlan(savedData.generatedPlan || '');
+			setWelcomeBack(true);
 		}
 	}, []);
 
-	// Save progress to localStorage
+	// Save progress to localStorage whenever responses or currentQuestionIndex change
 	useEffect(() => {
-		localStorage.setItem('surveyAnswers', JSON.stringify(answers));
-		localStorage.setItem('currentQuestionIndex', currentQuestionIndex.toString());
-	}, [answers, currentQuestionIndex])
+		const dataToSave = {
+			responses,
+			currentQuestionIndex,
+			generatedPlan,
+		};
+		localStorage.setItem(localStorageKey, JSON.stringify(dataToSave));
+	}, [responses, currentQuestionIndex, generatedPlan]);
 
+	// Move to the next question
+	const nextQuestion = () => {
+		const currentQuestion = questions[currentQuestionIndex];
+		if (currentQuestion.id === 'varsity' && responses['varsity'] === 'No') {
+			displayThankYou();
+			return;
+		}
+
+		setCurrentQuestionIndex((prevIndex) => {
+			if (currentQuestion.conditional && responses['varsity'] === 'Yes') {
+				return prevIndex + 1;
+			}
+			return prevIndex + 1;
+		});
+
+		if (currentQuestionIndex >= questions.length - 1) {
+			displayThankYou();
+		}
+	};
 
 	const generatePlan = () => {
 		let plan = '';
-
 		// Top Priority Section
 		if (responses.priority) {
-			plan += `<h2>Top Priority: ${responses.priority}</h2>`;
-			plan += `<p>Based on your top priority being <strong>${responses.priority}</strong>, we have tailored this plan to highlight the most relevant areas for you.</p>`;
+			plan += `<h2>Your top Priority: ${responses.priority}</h2>`;
+			plan += `<p> Having selected <strong>${responses.priority}</strong>, we have tailored this plan to highlight the most relevant areas for you.</p>`;
 		}
 
 		// Academic Interests (if "Courses" or "Extracurriculars" is the top priority)
-		if ((responses.priority === 'Courses' || responses.priority === 'Extracurriculars') && responses.academic_interests && responses.academic_interests.length > 0
+		if (
+			(responses.priority === 'Courses' || responses.priority === 'Extracurriculars') &&
+			responses.academic_interests &&
+			responses.academic_interests.length > 0
 		) {
 			plan += `<h3> Academic Interests </h3>`;
 			responses.academic_interests.forEach((broadCategory) => {
@@ -204,10 +247,10 @@ const useSurveyData = () => {
 			const formattedAdviceOutput = `
 				<ul>
 					${text
-					.split('.')
-					.filter((sentence) => sentence.trim().length > 0)
-					.map((sentence) => `<li> ${sentence.trim()} </li>`)
-					.join('')}
+						.split('.')
+						.filter((sentence) => sentence.trim().length > 0)
+						.map((sentence) => `<li> ${sentence.trim()} </li>`)
+						.join('')}
 				</ul>`;
 			setAdviceOutput(formattedAdviceOutput);
 			setShowAdvice(true);
@@ -249,42 +292,20 @@ const useSurveyData = () => {
 		}
 	};
 
-
-	const handleAnswer = (questionId, answer) => {
-		setAnswers(prevAnswers => ({
-			...prevAnswers,
-			[questionId]: answer
-		}));
-	};
-
-	const goToPreviousQuestion = () => {
-		if (currentQuestionIndex > 0) {
-			setCurrentQuestionIndex(currentQuestionIndex - 1);
-		}
-	};
-
-	const goToNextQuestion = () => {
-		if (currentQuestionIndex < questions.length - 1) {
-			setCurrentQuestionIndex(currentQuestionIndex + 1);
-		}
-	};
-
+	// Not so sure where this might be needed... But oh well
 	const resetSurvey = () => {
 		setCurrentQuestionIndex(0);
-		setAnswers({});
+		setResponses({});
 		setIsCompleted(false);
 		localStorage.removeItem('surveyAnswers');
 	};
-
-	const calculateProgress = () => {
-		return ((currentQuestionIndex + 1) / totalQuestions) * 100;	
-	}
 
 	return {
 		currentQuestion: questions[currentQuestionIndex],
 		answers,
 		isCompleted,
 		generatePlan,
+		nextQuestion,
 		generatedPlan,
 		adviceOutput,
 		handleAnswer,

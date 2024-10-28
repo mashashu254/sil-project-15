@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import useSurveyData from '../hooks/useSurveyData.js';
+import useSurveyData from '../hooks/useSurveyData.jsx';
 import QuestionCard from '../components/QuestionCard.jsx';
+import ProgressBar from '../components/ProgressBar.jsx';
 import PlanDisplay from '../components/PlanDisplay.jsx';
 import AdviceSection from '../components/AdviceSection.jsx';
-import ProgressBar from '../components/ProgressBar.jsx';
 
 
 const QuizPage = () => {
@@ -15,6 +15,7 @@ const QuizPage = () => {
 		adviceOutput,
 		handleAnswer,
 		goToNextQuestion,
+		goToPreviousQuestion,
 		totalQuestions,
 		calculateProgress,
 		requestAdvice,

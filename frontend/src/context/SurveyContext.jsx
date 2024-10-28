@@ -18,6 +18,19 @@ export const SurveyProvider = ({ children }) => {
 		}));
 	}
 
+	// Handle response changes
+	const handleInputChange = (event) => {
+		const { name, value, type } = event.target;
+		if (type === 'checkbox') {
+		setAnswers((prevResponses) => ({
+			...prevResponses,
+			[name]: prevResponses[name] ? [...prevResponses[name], value] : [value],
+		}));
+		} else {
+		setAnswers((prevResponses) => ({ ...prevResponses, [name]: value }));
+		}
+  };
+
 	const goToPreviousQuestion = () => {
 		if (currentQuestionIndex > 0) {
 			setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -42,6 +55,7 @@ export const SurveyProvider = ({ children }) => {
 			answers,
 			isCompleted,
 			handleAnswer,
+			handleInputChange,
 			goToPreviousQuestion,
 			goToNextQuestion,
 			calculateProgress

@@ -3,7 +3,7 @@ export const questions = [
 			question: "If you had to choose, what is your top priority?",
 			type: "radio",
 			options: ["Courses", "Recruiting/Career Preparation", "Social life", "Extracurriculars"],
-			id: "priority",
+			id: "topPriority",
 		},
 		{
 			question: "What are your academic interests? Please select all that apply.",
@@ -15,7 +15,7 @@ export const questions = [
 				"Physical Sciences",
 				"Engineering"
 			],
-			id: "academic_interests",
+			id: "academicInterests",
 		},
 		{
 			question: "What is your desired career?",
@@ -80,7 +80,7 @@ export const questions = [
 				"Tennis",
 				"Track & Field"
 			],
-			id: "varsity_team",
+			id: "varsityTeam",
 			conditional: true, // This will only show if "Yes" is selected in the previous question
 		}
 	];
