@@ -9,13 +9,13 @@ import AdviceSection from '../components/AdviceSection.jsx';
 const QuizPage = () => {
 	const {
 		currentQuestion,
-		answers,
+		responses,
 		isCompleted,
 		generatedPlan,
 		adviceOutput,
-		handleAnswer,
+		handleInputChange,
 		goToNextQuestion,
-		goToPreviousQuestion,
+		welcomeBack,
 		totalQuestions,
 		calculateProgress,
 		requestAdvice,
@@ -23,7 +23,6 @@ const QuizPage = () => {
 	} = useSurveyData()
 
 	const [reviseInput, setReviseInput] = useState('');
-
 	
 
 	if (!isCompleted) {
@@ -33,11 +32,10 @@ const QuizPage = () => {
 				<QuestionCard
 					question={currentQuestion}
 					selectedOption = {answers[currentQuestion.id]}
-					onAnswer={(answer) => handleAnswer(currentQuestion.id, answer)}
+					onAnswerChange={handleInputChange}
+					welcomeBack={welcomeBack && currentQuestion === 0}
+					currentResponse={responses}
 				/>
-				<button onClick={goToNextQuestion} className="capitalize">
-					{currentQuestion.id === totalQuestions - 1 ? 'Submit' : 'Next'}
-				</button>
 			</div>
 
 			
@@ -46,26 +44,26 @@ const QuizPage = () => {
 		// To render completion page or generate plan
 		return (
 			<div className="results-container">
-			<PlanDisplay plan={generatedPlan} />
-			<div className='revise-plan'>
-				<h3>
-					Revise Your Plan
-				</h3>
-				<input
-					type='text'
-					value={reviseInput}
-					onChange={(e) => setReviseInput(e.target.value)}
-					placeholder='Enter revision request...'
-				/>
-				<button onClick={() => revisePlan(reviseInput)}>
-					Revise Plan
-				</button>
-			</div>
+				<PlanDisplay plan={generatedPlan} />
+				<div className='revise-plan'>
+					<h3>
+						Revise Your Plan
+					</h3>
+					<input
+						type='text'
+						value={reviseInput}
+						onChange={(e) => setReviseInput(e.target.value)}
+						placeholder='Enter revision request...'
+					/>
+					<button onClick={() => revisePlan(reviseInput)}>
+						Revise Plan
+					</button>
+				</div>
 
-			<AdviceSection
-				adviceOutput={adviceOutput}
-				requestAdvice={requestAdvice}
-			/>
+				<AdviceSection
+					adviceOutput={adviceOutput}
+					requestAdvice={requestAdvice}
+				/>
 		</div>
 		)
 	}
