@@ -17,11 +17,13 @@ const QuizPage = () => {
 		handleResponse,
 		goToPreviousQuestion,
 		goToNextQuestion,
-		isLastQuestion,
 		isFirstQuestion,
-		// calculateProgress
-	} = useSurveyData()
+		isLastQuestion,
+	} = useSurveyData();
 	
+
+	if(!currentQuestion) return <div>Loading...</div>
+
 	return (
 		<div className='survey-container'>
 			<ProgressBar />

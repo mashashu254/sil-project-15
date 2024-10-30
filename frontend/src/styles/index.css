@@ -1,15 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Global font setup (for custom Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=SUSE:wght@100..800&display=swap');
 
 body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	overflow: hidden;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
+	overflow-x: hidden;
+	font-family: "Noto Sans TC", sans-serif;
+	font-optical-sizing: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -104,12 +102,6 @@ code {
 }
 
 /* ==== PLAN PAGE ==== */
-/* Global font setup (for custom Google Fonts) */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-body {
-	font-family: 'Roboto', sans-serif;
-}
 
 .plan-page {
 	position: relative;
@@ -521,31 +513,38 @@ body {
 .progress-bar-container {
     width: 100%;
     background-color: #e5e7eb;
-    border-radius: 9999px;
-    height: 0.625rem;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    /* height: 0.5rem; */
+    margin-top: 1rem 0;
 }
 
 /* Progress Indicator */
 .progress-bar {
     background-color: #2563eb;
-    height: 100%;
-    border-radius: 9999px;
+    height: 0.75rem;
+    border-radius: 0.5rem;
     transition: width 0.3s ease;
+}
+
+.progress-text {
+  display: block;
+  text-align: center;
+  margin-top: 5px;
 }
 
 
 /* === SURVEY BUTTON === */
 
 .survey-button {
-    padding: 0.5rem 1rem; /* px-4 py-2 */
+    padding: 0.5rem 1rem; 
     color: #ffffff;
-    border-radius: 0.5rem; /* rounded-lg */
+	border: none;
+    border-radius: 0.5rem; 
     transition: background-color 0.2s ease-in-out;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
+	font-family: "Noto Sans TC", sans-serif;
 }
 
 /* Enabled Button */
@@ -617,6 +616,23 @@ body {
     color: #374151;
 }
 
+.options {
+  max-height: 60vh; /* Adjust as needed */
+  overflow-y: auto;
+  padding-right: 10px; /* For scrollbar */
+}
+
+.question-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.survey-buttons {
+  margin-top: auto; /* Push buttons to the bottom */
+  padding: 10px 0;
+}
+
 
 .next-button {
     text-transform: capitalize;
@@ -635,3 +651,39 @@ body {
 
 
 /* === SURVEY OR QUIZ PAGE === */
+
+.survey-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* min-height: 100vh; */
+	height: auto;
+    background-color: #f9fafb; /* Light background for readability */
+    padding: 1.5rem;
+    gap: 2rem;
+}
+
+.progress-container {
+    width: 100%;
+    max-width: 40rem;
+}
+
+
+.question-container {
+    width: 100%;
+    max-width: 40rem;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 40rem;
+    gap: 1rem;
+}

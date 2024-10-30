@@ -9,18 +9,20 @@ const SurveyContext = createContext();
 
 export const SurveyProvider = ({ children }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [responses, setResponse] = useState({});
-
+	const [responses, setResponses] = useState({});
+	const goToPreviousQuestion = () => setCurrentQuestionIndex(prevIndex => Math.max(prevIndex - 1, 0));
+	const goToNextQuestion = () => setCurrentQuestionIndex(prevIndex => Math.min(prevIndex + 1, questions.length - 1));
+	const setResponse = (questionId, response) => {
+		setResponses(prevResponses => ({...prevResponses, [questionId]: response }))
+	};
 	const value = {
+		currentQuestionIndex,
 		currentQuestion: questions[currentQuestionIndex],
 		responses,
-		setResponse: (questionId, response) => {
-			setResponse((prevResponses) => ({
-				...prevResponses, [questionId]: response
-			}))
-		},
-		goToPreviousQuestion: () => setCurrentQuestionIndex(prevResponses => Math.max(prevResponses - 1, 0)),
-		goToNextQuestion: () => setCurrentQuestionIndex(prevResponses => Math.min(prevResponses + 1, questions.length - 1)),
+		setResponse,
+		totalQuestions: questions.length,
+		goToPreviousQuestion,
+		goToNextQuestion,
 		isLastQuestion: currentQuestionIndex === questions.length - 1,
 		isFirstQuestion: currentQuestionIndex === 0,
  	}
