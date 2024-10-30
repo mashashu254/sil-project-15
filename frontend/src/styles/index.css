@@ -465,5 +465,51 @@ body {
 	transform: scale(1.05);
 }
 
+/* === PROGRESS BAR COMPONENT === */
+.progress-bar-container {
+    width: 100%;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    height: 0.625rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Progress Indicator */
+.progress-bar {
+    background-color: #2563eb;
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+}
+
+
+/* === SURVEY BUTTON === */
+
+.survey-button {
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    color: #ffffff;
+    border-radius: 0.5rem; /* rounded-lg */
+    transition: background-color 0.2s ease-in-out;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Enabled Button */
+.survey-button-enabled {
+    background-color: #2563eb; /* blue-600 */
+}
+.survey-button-enabled:hover {
+    background-color: #1d4ed8; /* blue-700 */
+}
+
+/* Disabled Button */
+.survey-button-disabled {
+    background-color: #d1d5db; /* gray-300 */
+    cursor: not-allowed;
+}
+
+
 
 /* === SURVEY OR QUIZ PAGE === */

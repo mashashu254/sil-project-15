@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import AdviceSection from '../components/AdviceSection.jsx';
 import PlanDisplay from '../components/PlanDisplay.jsx';
-import useSurveyData from '../hooks/useSurveyData.jsx';
-
+import { useAIAdvice } from '../hooks/useAIAdvice';
 
 const PlanPage = () => {
-	const { adviceOutput, requestAdvice, revisePlan, generatedPlan } = useSurveyData();
+	const { adviceOutput, requestAdvice, revisePlan, generatedPlan } = useAIAdvice();
 
 	const [expanded, setExpanded] = useState(null);
 
