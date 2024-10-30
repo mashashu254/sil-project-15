@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useSurveyContext } from '../context/SurveyContext';
-import { questions } from '../data/questions';
+// useAIAdvice.js
+import { useCallback, useState } from 'react';
+import { useSurveyContext } from '../context/surveyContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
 import {
@@ -9,75 +9,17 @@ import {
 	varsityResources,
 	socialLifeOptions,
 	extracurricularClubs,
-} from '../data/temp_plan';
+} from '../data/planGenerationData';
 
 const apiKey = API_KEY || 'dummy_key';
-const localStorageKey = 'userSurveyData';
 
-const useSurveyData = () => {
-	const {
-		// currentQuestion,
-		answers,
-		isCompleted,
-		handleAnswer,
-		goToPreviousQuestion,
-		goToNextQuestion,
-		totalQuestions,
-		calculateProgress,
-	} = useSurveyContext();
+export const useAIAdvice = () => {
+	const [responses ] = useState({})
+	const [ reviseInput, generatedPlan, setGeneratedPlan, setAdviceOutput, setError ] = useState('');
+	const [ setShowAdvice ] = useState(false);
 
-	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [responses, setResponses] = useState({});
-	const [setIsCompleted] = useState(false);
-	const [generatedPlan, setGeneratedPlan] = useState('');
-	const [adviceOutput, setAdviceOutput] = useState('');
-	const [, setShowAdvice] = useState(false);
-	const [reviseInput] = useState('');
-	const [, setError] = useState('');
-	const [welcomeBack, setWelcomeBack] = useState(false);
 
-	// Load saved answers from localStorage
-	useEffect(() => {
-		const savedData = localStorage.getItem(localStorageKey);
-		const savedQuestionIndex = localStorage.getItem('currentQuestionIndex');
-		if (savedData) {
-			setResponses(savedData.responses || {});
-			setCurrentQuestionIndex(savedData.currentQuestionIndex || 0);
-			setGeneratedPlan(savedData.generatedPlan || '');
-			setWelcomeBack(true);
-		}
-	}, []);
-
-	// Save progress to localStorage whenever responses or currentQuestionIndex change
-	useEffect(() => {
-		const dataToSave = {
-			responses,
-			currentQuestionIndex,
-			generatedPlan,
-		};
-		localStorage.setItem(localStorageKey, JSON.stringify(dataToSave));
-	}, [responses, currentQuestionIndex, generatedPlan]);
-
-	// Move to the next question
-	const nextQuestion = () => {
-		const currentQuestion = questions[currentQuestionIndex];
-		if (currentQuestion.id === 'varsity' && responses['varsity'] === 'No') {
-			displayThankYou();
-			return;
-		}
-
-		setCurrentQuestionIndex((prevIndex) => {
-			if (currentQuestion.conditional && responses['varsity'] === 'Yes') {
-				return prevIndex + 1;
-			}
-			return prevIndex + 1;
-		});
-
-		if (currentQuestionIndex >= questions.length - 1) {
-			displayThankYou();
-		}
-	};
-
+	// Personalize Plan from survey responses
 	const generatePlan = () => {
 		let plan = '';
 		// Top Priority Section
@@ -260,7 +202,7 @@ const useSurveyData = () => {
 		}
 	};
 
-	// Revise the generated plan based on user input
+	// Revise the generated plan based on user inp
 	const revisePlan = async () => {
 		const inputText = `
 			Update the plan below based on the user's revision request, without changing
@@ -292,31 +234,5 @@ const useSurveyData = () => {
 		}
 	};
 
-	// Not so sure where this might be needed... But oh well
-	const resetSurvey = () => {
-		setCurrentQuestionIndex(0);
-		setResponses({});
-		setIsCompleted(false);
-		localStorage.removeItem('surveyAnswers');
-	};
-
-	return {
-		currentQuestion: questions[currentQuestionIndex],
-		answers,
-		isCompleted,
-		generatePlan,
-		nextQuestion,
-		generatedPlan,
-		adviceOutput,
-		handleAnswer,
-		goToNextQuestion,
-		goToPreviousQuestion,
-		resetSurvey,
-		requestAdvice,
-		calculateProgress,
-		totalQuestions,
-		revisePlan,
-	};
+	return { generatePlan, requestAdvice, revisePlan };
 };
-
-export default useSurveyData;
