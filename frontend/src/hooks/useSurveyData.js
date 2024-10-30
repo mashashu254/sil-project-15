@@ -4,29 +4,14 @@
 */
 
 
-import { useState } from 'react';
-import {
-	// SurveyProvider,
-	useSurveyContext
-} from '../context/surveyContext';
+
+import { useSurveyContext } from '../context/surveyContext.js';
 
 
 // const localStorageKey = 'userSurveyData';
 
 const useSurveyData = () => {
-	
-	const [
-		// currentQuestionIndex,
-		setCurrentQuestionIndex
-	] = useState(0);
-	const [
-		// responses,
-		setResponses
-	] = useState({});
-	const [setIsCompleted] = useState(false);
-	// const [generatedPlan, setGeneratedPlan] = useState('');
-	// const [welcomeBack, setWelcomeBack] = useState(false);
-	const { context } = useSurveyContext();
+	const context  = useSurveyContext();
 
 	// Load saved answers from localStorage
 	// useEffect(() => {
@@ -74,16 +59,6 @@ const useSurveyData = () => {
 		context.setResponse(context.currentQuestion.id, response)
 	}
 
-
-
-	// Not so sure where this might be needed... But oh well
-	const resetSurvey = () => {
-		setCurrentQuestionIndex(0);
-		setResponses({});
-		setIsCompleted(false);
-		localStorage.removeItem('surveyAnswers');
-	};
-
 	return {
 		currentQuestion: context.currentQuestion,
 		responses: context.responses,
@@ -91,11 +66,7 @@ const useSurveyData = () => {
 		goToPreviousQuestion: context.goToPreviousQuestion,
 		goToNextQuestion: context.goToNextQuestion,
 		isLastQuestion: context.isLastQuestion,
-		isFirstQuestion: context.isFirstQuestion,
-		// generatedPlan,
-		// welcomeBack,
-		resetSurvey,
-		// calculateProgress,
+		isFirstQuestion: context.isFirstQuestion
 	};
 };
 

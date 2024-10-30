@@ -3,8 +3,6 @@
 - in essence, the front desk hahaha
 - currently underachieving; no displaying of quesitons, collecting answers or handling navigation 
 */
-
-
 import React from 'react';
 import useSurveyData from '../hooks/useSurveyData';
 import QuestionCard from '../components/QuestionCard.jsx';
@@ -20,7 +18,7 @@ const QuizPage = () => {
 		goToPreviousQuestion,
 		goToNextQuestion,
 		isLastQuestion,
-		isFirstQuestion
+		isFirstQuestion,
 		// calculateProgress
 	} = useSurveyData()
 	
@@ -35,9 +33,9 @@ const QuizPage = () => {
 			/>
 			<div className="navigation-buttons">
 				<SurveyButton
-				label="Previous"
-				onClick={goToPreviousQuestion}
-				disabled={isFirstQuestion}
+					label="Previous"
+					onClick={goToPreviousQuestion}
+					disabled={isFirstQuestion}
 				/>
 				<SurveyButton
 				label={isLastQuestion ? "Finish" : "Next"}

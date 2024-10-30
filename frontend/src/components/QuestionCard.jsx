@@ -1,9 +1,7 @@
 import React from 'react';
 import useSurveyData from '../hooks/useSurveyData.js';
 
-
 const QuestionCard = ({ question, onNext, welcomeBack, onAnswerChange, currentResponse = {} }) => {
-
 	const { totalQuestions } = useSurveyData(); 
 	if (!question) {
 		return null;
@@ -12,62 +10,55 @@ const QuestionCard = ({ question, onNext, welcomeBack, onAnswerChange, currentRe
 	const isLastQuestion = question.id === totalQuestions - 1;
 
 	return (
-		<div className="bg-white shadow-md rounded-lg p-6 mb-4 max-w-xl mx-auto">
-			{/* Welcome Back Message */}
-			{welcomeBack && <p className="welcome-back">
-				Welcome back! Let's pick up where you left off.
-			</p>}
-
-
+		<div className="question-card">
 			{/* Main Question */}
-			<h3 className='text-xl font-semibold mb-4 text-gray-800'>
+			<h3 className="main-question">
 				{question.question}
 			</h3>
 
 			{/* Options */}
-			<div className="space-y-2" id="answer-container">
+			<div className="answer-container" id="answer-container">
 				{question.type === 'radio' && question.options.map((option) => (
-					<span key={option} className="flex items-center">
-						<label key={option} className='flex items-center w-full cursor-pointer'>
+					<span key={option} className="option-label">
+						<label key={option} className="option-label">
 							<input
 								type="radio"
 								name={question.id}
 								value={option}
-								checked={currentResponse[question.id]=== option}
+								checked={currentResponse[question.id] === option}
 								onChange={(e) => onAnswerChange(e, question.id)}
-								className='form-radio text-blue-600 h-4 w-4 mr-3'
+								className="form-radio"
 							/>
-
-							<span className='text-gray-700'>
+							<span className="option-text">
 								{option.length > 50 ? (
-									<span title='option'>
+									<span title="option">
 										{ option.slice(0, 50)}...
 									</span>
 								) : (
-									{option}
+									option
 								)}
 							</span>
 						</label>
 					</span>
 				))}
 				{question.type === 'checkbox' && question.options.map((option) => (
-					<span key={option} className='flex items-center'>
-						<label key={option} className='flex items-center w-full cursor-pointer'>
+					<span key={option} className="option-label">
+						<label key={option} className="option-label">
 							<input
 								type="checkbox"
 								name={question.id}
 								value={option}
 								checked={Array.isArray(currentResponse[question.id]) && currentResponse[question.id].includes(option)}
 								onChange={(e) => onAnswerChange(e.target, question.id, 'checkbox')}
-								className='form-checkbox text-blue-600 h-4 w-4 mr-3'
+								className="form-checkbox"
 							/>
-							<span className='text-gray-700'>
+							<span className="option-text">
 								{option.length > 50 ? (
-									<span title='option'>
+									<span title="option">
 										{ option.slice(0, 50)}...
 									</span>
 								) : (
-									{option}
+									option
 								)}
 							</span>
 						</label>
@@ -75,9 +66,9 @@ const QuestionCard = ({ question, onNext, welcomeBack, onAnswerChange, currentRe
 				))}
 			</div>
 
-			 {/* Next or Submit Button */}
-			<button onClick={onNext} className="capitalize">
-				{isLastQuestion ? 'Submit' : 'Next'}
+			{/* Next or Submit Button */}
+			<button onClick={onNext} className="next-button">
+				{isLastQuestion ? 'submit' : 'next'}
 			</button>
 		</div>
 	);
