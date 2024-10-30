@@ -1,6 +1,6 @@
 // useAIAdvice.js
-import { useCallback, useState } from 'react';
-import { useSurveyContext } from '../context/surveyContext';
+import { useState } from 'react';
+// import { useSurveyContext } from '../context/surveyContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
 import {
