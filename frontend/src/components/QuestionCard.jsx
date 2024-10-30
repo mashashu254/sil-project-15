@@ -1,6 +1,10 @@
 import React from 'react';
+import useSurveyData from '../hooks/useSurveyData.js';
+
 
 const QuestionCard = ({ question, onNext, welcomeBack, onAnswerChange, currentResponse = {} }) => {
+
+	const { totalQuestions } = useSurveyData(); 
 	if (!question) {
 		return null;
 	}
