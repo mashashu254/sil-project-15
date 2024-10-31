@@ -1,4 +1,3 @@
-import '../App.css';
 // import axios from "axios";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,9 +15,9 @@ function Register() {
 	const navigate = useNavigate();
 
 	return (
-		<div className="center">
+		<div className="register-container">
 			<h1>Register</h1>
-			<form onSubmit={() => navigate('/quiz')}>
+			<form className='user-input' onSubmit={() => navigate('/survey')}>
 				<div>
 					<label>Username:</label>
 					<input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -36,7 +35,7 @@ function Register() {
 						onChange={(e) => setPassword(e.target.value)}
 					/>
 				</div>
-				<button onClick={() => navigate('/quiz')}>Submit</button>
+				<button onClick={() => navigate('/survey')}>Submit</button>
 				<p className="login">
 					Already have an account? <a href="/login">Login</a>
 				</p>

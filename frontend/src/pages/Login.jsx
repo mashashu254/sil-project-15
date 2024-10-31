@@ -1,4 +1,3 @@
-import "../App.css";
 // import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +14,10 @@ function Login() {
 	const navigate = useNavigate();
 
 	return (
-		<div className="center">
+		<div className="login-container">
 			<h1>Login</h1>
-			<form onSubmit={() => navigate("/quiz")}>
-				<div className="user__input">
+			<form className="user-input" onSubmit={() => navigate("/survey")}>
+				<div>
 					<label>Username:</label>
 					<input
 						type="text"
@@ -45,7 +44,7 @@ function Login() {
 						onChange={(e) => setPassword(e.target.value)}
 					/>
 				</div>
-				<button onClick={() => navigate("/quiz")}>Submit</button>
+				<button onClick={() => navigate("/survey")}>Submit</button>
 				<p className="register">
 					Don't have an account? <a href="/register">Register</a>
 				</p>
