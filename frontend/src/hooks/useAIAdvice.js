@@ -1,6 +1,4 @@
-// useAIAdvice.js
 import { useState } from 'react';
-// import { useSurveyContext } from '../context/surveyContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
 import {
@@ -15,7 +13,10 @@ const apiKey = API_KEY || 'dummy_key';
 
 export const useAIAdvice = () => {
 	const [responses ] = useState({})
-	const [ reviseInput, generatedPlan, setGeneratedPlan, setAdviceOutput, setError ] = useState('');
+	const [generatedPlan, setGeneratedPlan] = useState(null);
+	const [adviceOutput, setAdviceOutput] = useState('');
+	const [reviseInput, setReviseInput] = useState('');
+	const [isRevising, setIsRevising] = useState(false)
 	const [ setShowAdvice ] = useState(false);
 
 
@@ -229,10 +230,15 @@ export const useAIAdvice = () => {
 			// ));
 			setGeneratedPlan(revisedText);
 		} catch (error) {
-			console.error('Error:', error);
-			setError('An error occurred. Please check your API key.');
+			console.error('Error revising plan:', error);
+			// would set some error state in here
+			// setError('An error occurred. Please check your API key.');
+		} finally {
+			setIsRevising(false);
+			// clear the revision input after use
+			setReviseInput('')
 		}
 	};
 
-	return { generatePlan, requestAdvice, revisePlan };
+	return { generatePlan, generatedPlan, requestAdvice, adviceOutput, revisePlan, reviseInput, setReviseInput, isRevising  };
 };
