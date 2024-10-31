@@ -311,6 +311,7 @@ code {
 
 /* Title */
 .welcome-title {
+	margin: 1rem 0;
 	font-size: 2.25rem;
 	font-weight: 800;
 	color: #e9e9e9;
@@ -318,6 +319,7 @@ code {
 
 @media (min-width: 768px) {
 	.welcome-title {
+		margin: 0;
 		font-size: 3rem;
 	}
 }
@@ -423,8 +425,8 @@ code {
 .content-container {
 	position: relative;
 	background-color: rgba(243, 244, 246, 0.8);
-	/* gray-100 with opacity */
 	width: 100%;
+	margin: 0 1rem;
 	max-width: 48rem;
 	padding: 2rem;
 	border-radius: 0.5rem;
@@ -438,6 +440,7 @@ code {
 @media (min-width: 768px) {
 	.content-container {
 		padding: 3rem;
+		margin: 0;
 	}
 }
 
@@ -493,6 +496,7 @@ code {
 	display: inline-block;
 	background-color: #2563eb;
 	color: #ffffff;
+	font-family: "Noto Sans TC", sans-serif;
 	font-weight: 600;
 	padding: 0.75rem 2rem;
 	border-radius: 0.5rem;
