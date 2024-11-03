@@ -4,6 +4,7 @@
 - currently underachieving; no displaying of quesitons, collecting answers or handling navigation 
 */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useSurveyData from '../hooks/useSurveyData';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
@@ -20,6 +21,8 @@ const QuizPage = () => {
 		isFirstQuestion,
 		isLastQuestion,
 	} = useSurveyData();
+
+	const navigate = useNavigate();
 	
 
 	if(!currentQuestion) return <div>Loading...</div>
@@ -41,7 +44,13 @@ const QuizPage = () => {
 				/>
 				<SurveyButton
 				label={isLastQuestion ? "Finish" : "Next"}
-				onClick={goToNextQuestion}
+					onClick={() => {
+						if (isLastQuestion) {
+							navigate('/plan');
+						} else {
+							goToNextQuestion();
+						}
+				}}
 				disabled={!responses[currentQuestion.id]}
 				/>
 			</div>

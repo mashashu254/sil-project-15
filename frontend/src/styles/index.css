@@ -373,6 +373,16 @@ code {
 	transform: scale(1.05);
 }
 
+.landing-page-container .error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.landing-page-container .cta-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Right Section with Yale Logo */
 .right-section {
 	display: flex;

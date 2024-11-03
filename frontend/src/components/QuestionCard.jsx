@@ -1,17 +1,15 @@
 import React from 'react';
 import useSurveyData from '../hooks/useSurveyData.js';
 
-const QuestionCard = ({ question, onAnswerChange, currentResponse = {} }) => {
+const QuestionCard = ({ question }) => {
 	const { responses, handleResponse } = useSurveyData(); 
-	if (!question) {
-		return null;
-	}
 
 	const isOptionSelected = (option) => {
-		if (question.type === 'radio') {
+		if (!responses[question.id]) return false;
+		if(question.type === 'radio') {
 			return responses[question.id] === option;
 		} else if (question.type === 'checkbox') {
-			return responses[question.id]?.includes(option) || false;
+			return responses[question.id].includes(option) || false;
 		}
 		return false;
 	}	
@@ -28,6 +26,9 @@ const QuestionCard = ({ question, onAnswerChange, currentResponse = {} }) => {
 			}
 		}
 	}
+
+	// console.log('Responses:', responses);
+	// console.log('Is selected:', isOptionSelected(option));
 
 	return (
 		<div className="question-card">
@@ -47,7 +48,7 @@ const QuestionCard = ({ question, onAnswerChange, currentResponse = {} }) => {
 								value={option}
 								checked={isOptionSelected(option)}
 								onChange={() => handleOptionChange(option)}
-								className={ `form-${question.type}`}
+								className={`form-${question.type}`}
 							/>
 							<span className="option-text">
 								{ option }
