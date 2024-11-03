@@ -3,6 +3,6 @@ export const checkYaleAuthentication = async () => {
 		setTimeout(() => {
 			const isAuthenticated = Math.random() < 0.5;
 			resolve(isAuthenticated);
-		}, 1000);
+		}, 5000);
 	})
 }

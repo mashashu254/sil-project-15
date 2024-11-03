@@ -14,7 +14,7 @@ const LandingPage = () => {
 			if (isAuthenticated) {
 				navigate('/intro')
 			} else {
-				setError('You need a valid Yale account to access the survey. Please sign up or log in.')
+				navigate('/login')
 			}
 		} catch (err) {
 			setError('An error occurred during authentication. Please try again.');
