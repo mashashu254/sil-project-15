@@ -20,12 +20,30 @@ const QuizPage = () => {
 		goToNextQuestion,
 		isFirstQuestion,
 		isLastQuestion,
+		isVarsityQuestion,
+		isLastQuestionForNonVarsity
 	} = useSurveyData();
 
 	const navigate = useNavigate();
 	
-
 	if(!currentQuestion) return <div>Loading...</div>
+
+	const handleNext = () => {
+		if (isLastQuestion || isLastQuestionForNonVarsity()) {
+			navigate('/plan');
+		} else {
+			goToNextQuestion();
+		}
+	};
+
+	const getNextButtonLabel = () => {
+		if (isLastQuestion) return 'Finish';
+		if (isVarsityQuestion()) {
+			return responses[currentQuestion.id] === 'No' ? "Finish" : "Next";
+		}
+		return "Next";
+	}
+
 
 	return (
 		<div className='survey-container'>
@@ -43,15 +61,9 @@ const QuizPage = () => {
 					disabled={isFirstQuestion}
 				/>
 				<SurveyButton
-				label={isLastQuestion ? "Finish" : "Next"}
-					onClick={() => {
-						if (isLastQuestion) {
-							navigate('/plan');
-						} else {
-							goToNextQuestion();
-						}
-				}}
-				disabled={!responses[currentQuestion.id]}
+					label={getNextButtonLabel()}
+					onClick={handleNext}
+					disabled={!responses[currentQuestion.id]}
 				/>
 			</div>
 		</div>

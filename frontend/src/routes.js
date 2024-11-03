@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import LandingPage from './pages/LandingPage';
@@ -19,7 +19,11 @@ const Router = () => (
 				</SurveyProvider>
 			}
 			/>
-			<Route path="/plan" element={<PlanPage />} />
+			<Route path="/plan" element={
+				<SurveyProvider>
+					<PlanPage />
+				</SurveyProvider>
+			} />
 			<Route path="/login" element={<Login />} />
 			<Route path="register" element={<Register />} />
 		</Routes>

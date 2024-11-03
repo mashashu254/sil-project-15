@@ -6,23 +6,42 @@
 import { useSurveyContext } from '../context/surveyContext';
 
 const useSurveyData = () => {
-	const context  = useSurveyContext();
+	const {
+		currentQuestion,
+		currentQuestionIndex,
+		responses,
+		setResponse,
+		goToPreviousQuestion,
+		goToNextQuestion,
+		isFirstQuestion,
+		isLastQuestion,
+		totalQuestions
+	} = useSurveyContext();
 
+	const handleResponse = (questionId, answer) => {
+		setResponse(questionId, answer)
+	}
 
-	const handleResponse = (answer) => {
-		context.setResponse(context.currentQuestion.id, answer)
+	const isVarsityQuestion = () => {
+		return currentQuestion?.id === 'varsity';
+	}
+
+	const isLastQuestionForNonVarsity = () => {
+		return isVarsityQuestion() && responses['varsity'] === 'No';
 	}
 
 	return {
-		currentQuestionIndex: context.currentQuestionIndex,
-		currentQuestion: context.currentQuestion,
-		responses: context.responses,
+		currentQuestionIndex,
+		currentQuestion,
+		responses,
 		handleResponse,
-		totalQuestions: context.totalQuestions,
-		goToPreviousQuestion: context.goToPreviousQuestion,
-		goToNextQuestion: context.goToNextQuestion,
-		isLastQuestion: context.isLastQuestion,
-		isFirstQuestion: context.isFirstQuestion
+		totalQuestions,
+		goToPreviousQuestion,
+		goToNextQuestion,
+		isFirstQuestion,
+		isLastQuestion,
+		isVarsityQuestion,
+		isLastQuestionForNonVarsity
 	};
 };
 
