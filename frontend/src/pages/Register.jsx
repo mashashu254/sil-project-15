@@ -17,7 +17,7 @@ function Register() {
 	return (
 		<div className="register-container">
 			<h1>Register</h1>
-			<form className='user-input' onSubmit={() => navigate('/survey')}>
+			<form className='user-input' onSubmit={() => navigate('/intro')}>
 				<div>
 					<label>Username:</label>
 					<input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />

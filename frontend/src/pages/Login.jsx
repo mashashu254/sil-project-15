@@ -1,6 +1,6 @@
 // import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // axios.defaults.xsrfCookieName = "csrftoken";
 // axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
 	// const [currentUser, setCurrentUser] = useState(false);
+	const location = useLocation();
+	const message = location.state?.message;
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -16,7 +18,9 @@ function Login() {
 	return (
 		<div className="login-container">
 			<h1>Login</h1>
-			<form className="user-input" onSubmit={() => navigate("/survey")}>
+			{ message && <p className="info-message">{message}</p> }
+
+			<form className="user-input" onSubmit={() => navigate("/intro")}>
 				<div>
 					<label>Username:</label>
 					<input
