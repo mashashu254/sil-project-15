@@ -30,6 +30,25 @@ code {
 	min-height: 50vh;
 }
 
+.login-container .error-message,
+.register-container .error-message {
+	padding: 1rem;
+	margin: 0.5rem auto;
+	border-radius: 0.5rem;
+	background: lightpink;
+	color: crimson;
+	text-align: center;
+}
+
+.login-container .info-message {
+	padding: 1rem;
+	margin: 0.5rem auto;
+	border-radius: 0.5rem;
+	background: greenyellow;
+	color: darkgreen;
+	text-align: center;
+}
+
 .login-container h1, 
 .register-container h1 {
 	font-size: 2.25rem;
@@ -55,12 +74,26 @@ code {
 }
 
 .user-input input[type="text"],
-.user-input input[type="email"],
-.user-input input[type="password"] {
+.user-input input[type="email"] {
 	width: 80%;
+	font-family: "Noto Sans TC", sans-serif;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+	border: 1px solid #ccc;
+}
+
+.user-input input[type="password"] {
+	width: 80%;
+	letter-spacing: -0.0125rem;
+	font-family: "Noto Sans TC", sans-serif;
+	/* display: flex; */
+	/* align-items: center; */
+	/* justify-content: center; */
 	padding: 0.5rem;
 	margin: 0.5rem 0;
 	font-size: 1rem;
@@ -77,6 +110,7 @@ code {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+	font-family: "Noto Sans TC", sans-serif;
     font-size: 1em;
     transition: box-shadow 0.3s;
 }
