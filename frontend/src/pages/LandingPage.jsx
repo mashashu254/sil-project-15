@@ -1,28 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkYaleAuthentication } from '../services/authService';
-const LandingPage = () => {
-	const navigate = useNavigate();
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(null);
 
-	const handleAuthentication = async () => {
-		setIsLoading(true);
-		setError(null)
-		try {
-			const isAuthenticated = await checkYaleAuthentication();
-			if (isAuthenticated) {
-				navigate('/intro')
-			} else {
-				navigate('/login')
-			}
-		} catch (err) {
-			setError('An error occurred during authentication. Please try again.');
-			console.error('Authentication error:', err);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+const LandingPage = () => {
+	const [error] = useState(null);
+	const navigate = useNavigate();
 
 
 	return (
@@ -36,11 +17,10 @@ const LandingPage = () => {
 					Discover your academic goals, hobbies, skills, and more to craft your ideal Yale experience.
 				</p>
 				<button
-					onClick={handleAuthentication}
-					disabled={isLoading}
-					className="cta-button"
+					className='cta-button'
+					onClick={() => navigate('/intro')}
 				>
-					{isLoading ? 'Authenticating...' : "Let's Get to Know You Better"}
+					Let's Get to Know You Better
 				</button>
 				{ error && <p className="error-message">{ error }</p>}
 			</div>
