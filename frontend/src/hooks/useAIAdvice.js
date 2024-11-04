@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
-import {
-	academicLinks,
-	careerGuides,
-	varsityResources,
-	socialLifeOptions,
-	extracurricularClubs,
-} from '../data/planGenerationData';
+import { academicLinks, careerGuides, varsityResources, socialLifeOptions, extracurricularClubs } from '../data/planGenerationData';
 
 const apiKey = API_KEY || 'dummy_key';
 
 export const useAIAdvice = () => {
-	const [responses ] = useState({})
+	const [responses] = useState({})
 	const [generatedPlan, setGeneratedPlan] = useState(null);
 	const [adviceOutput, setAdviceOutput] = useState('');
 	const [reviseInput, setReviseInput] = useState('');
@@ -163,7 +157,7 @@ export const useAIAdvice = () => {
 		}
 
 		// Set the generated plan
-		setGeneratedPlan(plan);
+		return plan
 	};
 
 	// AI advice generation function
@@ -240,5 +234,14 @@ export const useAIAdvice = () => {
 		}
 	};
 
-	return { generatePlan, generatedPlan, requestAdvice, adviceOutput, revisePlan, reviseInput, setReviseInput, isRevising  };
+	return {
+		generatePlan,
+		generatedPlan,
+		requestAdvice,
+		adviceOutput,
+		revisePlan,
+		reviseInput,
+		setReviseInput,
+		isRevising
+	};
 };
