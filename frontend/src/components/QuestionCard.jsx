@@ -1,75 +1,62 @@
 import React from 'react';
 import useSurveyData from '../hooks/useSurveyData.js';
 
-const QuestionCard = ({ question, onNext, welcomeBack, onAnswerChange, currentResponse = {} }) => {
-	const { totalQuestions } = useSurveyData(); 
-	if (!question) {
-		return null;
+const QuestionCard = ({ question }) => {
+	const { responses, handleResponse } = useSurveyData(); 
+
+	const isOptionSelected = (option) => {
+		if (!responses[question.id]) return false;
+		if(question.type === 'radio') {
+			return responses[question.id] === option;
+		} else if (question.type === 'checkbox') {
+			return responses[question.id].includes(option) || false;
+		}
+		return false;
+	}	
+
+	const handleOptionChange = (option) => {
+		if (question.type === 'radio') {
+			handleResponse(question.id, option);
+		} else if (question.type === 'checkbox') {
+			const currentResponses = responses[question.id] || [];
+			if (currentResponses.includes(option)) {
+				handleResponse(question.id, currentResponses.filter((item) => item !== option));
+			} else {
+				handleResponse(question.id, [...currentResponses, option]);
+			}
+		}
 	}
 
-	const isLastQuestion = question.id === totalQuestions - 1;
+	// console.log('Responses:', responses);
+	// console.log('Is selected:', isOptionSelected(option));
 
 	return (
 		<div className="question-card">
 			{/* Main Question */}
-			<h3 className="main-question">
+			<h4 className="main-question">
 				{question.question}
-			</h3>
+			</h4>
 
 			{/* Options */}
 			<div className="answer-container" id="answer-container">
-				{question.type === 'radio' && question.options.map((option) => (
+				{question.options.map((option) => (
 					<span key={option} className="option-label">
 						<label key={option} className="option-label">
 							<input
-								type="radio"
+								type={question.type}
 								name={question.id}
 								value={option}
-								checked={currentResponse[question.id] === option}
-								onChange={(e) => onAnswerChange(e, question.id)}
-								className="form-radio"
+								checked={isOptionSelected(option)}
+								onChange={() => handleOptionChange(option)}
+								className={`form-${question.type}`}
 							/>
 							<span className="option-text">
-								{option.length > 50 ? (
-									<span title="option">
-										{ option.slice(0, 50)}...
-									</span>
-								) : (
-									option
-								)}
-							</span>
-						</label>
-					</span>
-				))}
-				{question.type === 'checkbox' && question.options.map((option) => (
-					<span key={option} className="option-label">
-						<label key={option} className="option-label">
-							<input
-								type="checkbox"
-								name={question.id}
-								value={option}
-								checked={Array.isArray(currentResponse[question.id]) && currentResponse[question.id].includes(option)}
-								onChange={(e) => onAnswerChange(e.target, question.id, 'checkbox')}
-								className="form-checkbox"
-							/>
-							<span className="option-text">
-								{option.length > 50 ? (
-									<span title="option">
-										{ option.slice(0, 50)}...
-									</span>
-								) : (
-									option
-								)}
+								{ option }
 							</span>
 						</label>
 					</span>
 				))}
 			</div>
-
-			{/* Next or Submit Button */}
-			<button onClick={onNext} className="next-button">
-				{isLastQuestion ? 'submit' : 'next'}
-			</button>
 		</div>
 	);
 };

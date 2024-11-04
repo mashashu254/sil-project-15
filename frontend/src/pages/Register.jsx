@@ -1,30 +1,52 @@
 // import axios from "axios";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { register } from '../services/authService'
 
-// axios.defaults.xsrfCookieName = "csrftoken";
-// axios.defaults.xsrfHeaderName = "X-CSRFToken";
-// axios.defaults.withCredentials = true;
 
 function Register() {
 	// const [currentUser, setCurrentUser] = useState(false);
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-
+	const [error, setError] = useState('');
 	const navigate = useNavigate();
+
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const result = await register(username, email, password);
+		if(result.success) {
+			navigate('/');
+		} else {
+			setError(result.message);
+		}
+	}
 
 	return (
 		<div className="register-container">
 			<h1>Register</h1>
-			<form className='user-input' onSubmit={() => navigate('/survey')}>
+			{ error && <p className="error-message">{error}</p> }
+
+			<form className='user-input' onSubmit={handleSubmit}>
 				<div>
 					<label>Username:</label>
-					<input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+					<input 
+						type="text" 
+						id="username" 
+						value={username} 
+						onChange={(e) => setUsername(e.target.value)} 
+						required
+					/>
 				</div>
 				<div>
 					<label>Email:</label>
-					<input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+					<input 
+						type="email" 
+						id="email" 
+						value={email} 
+						onChange={(e) => setEmail(e.target.value)} 
+					/>
 				</div>
 				<div>
 					<label>Password:</label>
@@ -33,9 +55,12 @@ function Register() {
 						id="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
+						required
 					/>
 				</div>
-				<button onClick={() => navigate('/survey')}>Submit</button>
+				<button type="submit">
+					Submit
+				</button>
 				<p className="login">
 					Already have an account? <a href="/login">Login</a>
 				</p>

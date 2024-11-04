@@ -4,6 +4,7 @@
 - currently underachieving; no displaying of quesitons, collecting answers or handling navigation 
 */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useSurveyData from '../hooks/useSurveyData';
 import QuestionCard from '../components/QuestionCard.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
@@ -17,11 +18,33 @@ const QuizPage = () => {
 		handleResponse,
 		goToPreviousQuestion,
 		goToNextQuestion,
-		isLastQuestion,
 		isFirstQuestion,
-		// calculateProgress
-	} = useSurveyData()
+		isLastQuestion,
+		isVarsityQuestion,
+		isLastQuestionForNonVarsity
+	} = useSurveyData();
+
+	const navigate = useNavigate();
 	
+	if(!currentQuestion) return <div>Loading...</div>
+
+	const handleNext = () => {
+		if (isLastQuestion || isLastQuestionForNonVarsity()) {
+			navigate('/plan');
+		} else {
+			goToNextQuestion();
+		}
+	};
+
+	const getNextButtonLabel = () => {
+		if (isLastQuestion) return 'Finish';
+		if (isVarsityQuestion()) {
+			return responses[currentQuestion.id] === 'No' ? "Finish" : "Next";
+		}
+		return "Next";
+	}
+
+
 	return (
 		<div className='survey-container'>
 			<ProgressBar />
@@ -38,9 +61,9 @@ const QuizPage = () => {
 					disabled={isFirstQuestion}
 				/>
 				<SurveyButton
-				label={isLastQuestion ? "Finish" : "Next"}
-				onClick={goToNextQuestion}
-				disabled={!responses[currentQuestion.id]}
+					label={getNextButtonLabel()}
+					onClick={handleNext}
+					disabled={!responses[currentQuestion.id]}
 				/>
 			</div>
 		</div>
