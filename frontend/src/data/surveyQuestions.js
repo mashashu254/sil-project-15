@@ -2,18 +2,18 @@ export const questions = [
 		{
 			question: "If you had to choose, what is your top priority?",
 			type: "radio",
-			options: ["Courses", "Recruiting/Career Preparation", "Social life", "Extracurriculars"],
+			options: ["Courses", "Extracurriculars", "Recruiting/Career Preparation", "Social life"],
 			id: "topPriority",
 		},
 		{
 			question: "What are your academic interests? Please select all that apply.",
 			type: "checkbox",
 			options: [
-				"Humanities and the Arts",
-				"Social Sciences",
 				"Biological Sciences",
+				"Engineering",
+				"Humanities and the Arts",
 				"Physical Sciences",
-				"Engineering"
+				"Social Sciences"
 			],
 			id: "academicInterests",
 		},
@@ -21,14 +21,14 @@ export const questions = [
 			question: "What is your desired career?",
 			type: "radio",
 			options: [
-				"Technology", 
-				"Biotechnology", 
-				"Finance", 
-				"Consulting", 
 				"Academia", 
+				"Biotechnology", 
+				"Consulting", 
+				"Education",
+				"Finance", 
 				"Law", 
 				"Medicine", 
-				"Education"
+				"Technology"
 			],
 			id: "career",
 		},
@@ -39,16 +39,16 @@ export const questions = [
 				"Acappella",
 				"Arts",
 				"Athletics (not varsity)",
-				"Entrepreneurship",
 				"Comedy",
+				"Community Outreach",
 				"Cultural",
 				"Dance",
+				"Entrepreneurship",
+				"Engineering",
 				"Music",
 				"Outdoors",
 				"Politics & Government",
 				"Publications",
-				"Engineering",
-				"Community Outreach",
 				"Theater"
 			],
 			id: "hobbies",
