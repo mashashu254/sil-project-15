@@ -1,40 +1,43 @@
 import { useState } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { API_KEY } from '../api_key';
-import { academicLinks, careerGuides, varsityResources, socialLifeOptions, extracurricularClubs } from '../data/planGenerationData';
+import {
+	academicLinks,
+	careerGuides,
+	varsityResources,
+	socialLifeOptions,
+	extracurricularClubs,
+} from '../data/planGenerationData';
 
 const apiKey = API_KEY || 'dummy_key';
 
 export const useAIAdvice = () => {
-	const [responses] = useState({})
-	const [generatedPlan, setGeneratedPlan] = useState(null);
+	const [responses] = useState({});
+	const [generatedPlan, setGeneratedPlan] = useState('');
 	const [adviceOutput, setAdviceOutput] = useState('');
 	const [reviseInput, setReviseInput] = useState('');
-	const [isRevising, setIsRevising] = useState(false)
-	const [ setShowAdvice ] = useState(false);
-
+	const [isRevising, setIsRevising] = useState(false);
+	const [setShowAdvice] = useState(false);
 
 	// Personalize Plan from survey responses
-	const generatePlan = () => {
+	const generatePlan = (responses) => {
 		let plan = '';
 		// Top Priority Section
 		if (responses.priority) {
-			plan += `<h2>Your top Priority: ${responses.priority}</h2>`;
-			plan += `<p> Having selected <strong>${responses.priority}</strong>, we have tailored this plan to highlight the most relevant areas for you.</p>`;
+			plan += `<h2>Top Priority: ${responses.priority}</h2>`;
+			plan += `<p>Based on your top priority being <strong>${responses.priority}</strong>, we have tailored this plan to highlight the most relevant areas for you.</p>`;
 		}
-
 		// Academic Interests (if "Courses" or "Extracurriculars" is the top priority)
 		if (
 			(responses.priority === 'Courses' || responses.priority === 'Extracurriculars') &&
 			responses.academic_interests &&
 			responses.academic_interests.length > 0
 		) {
-			plan += `<h3> Academic Interests </h3>`;
+			plan += `<h3>Academic Interests</h3>`;
 			responses.academic_interests.forEach((broadCategory) => {
 				if (academicLinks[broadCategory]) {
 					// Provide brief description of the category
 					plan += `<p><strong>${broadCategory}</strong>: ${academicLinks[broadCategory].description}</p>`;
-
 					// list majors within that category
 					plan += `<p>Here are some majors you might consider:</p>`;
 					plan += `<ul>`;
@@ -45,11 +48,9 @@ export const useAIAdvice = () => {
 				}
 			});
 		}
-
 		// Career Goals (Detailed if "Recruiting/Career Preparation" is the top priority)
 		if (responses.career) {
 			const career = responses.career;
-
 			// If "Recruiting/Career Preparation" is the top priority
 			if (responses.priority === 'Recruiting/Career Preparation') {
 				if (careerGuides[career]) {
@@ -58,14 +59,13 @@ export const useAIAdvice = () => {
 			}
 			// if not the top priority
 			else {
-				plan += `<h3> Career Goals </h3>`;
-				plan += `<p>Even though <strong>${responses.priority}</strong> is your top priority, it's still important to plan for your future career. Here’s a quick guide based on your interest in <strong>${career}</strong>:</p>`;
+				plan += `<h3>Career Goals</h3>`;
+				plan += `<p>Even though <strong>${responses.priority}</strong> is your top priority, it's still important to plan for your future career. Here is a quick guide based on your interest in <strong>${career}</strong>:</p>`;
 				if (careerGuides[career]) {
-					plan += `<p> Check out this resource for <strong>${career}</strong>: <a href="${careerGuides[career]}" target="_blank">Career Guide</a>.</p>`;
+					plan += `<p>Check out this resource for <strong>${career}</strong>: <a href="${careerGuides[career]}" target="_blank">Career Guide</a>.</p>`;
 				}
 			}
 		}
-
 		// Varsity Athlete Resources (If "Yes" to Varsity)
 		if (responses.varsity === 'Yes') {
 			plan += `<h3>Varsity Athlete Resources</h3>`;
@@ -74,34 +74,30 @@ export const useAIAdvice = () => {
 			plan += `<ul>${varsityResources.templates
 				.map((template) => `<li><a href="${template}" target="_blank">Example Template Link</a></li>`)
 				.join('')}</ul>`;
-
 			// Include team-specific advice if applicable
 			if (responses.varsity_team) {
 				plan += `<p>As a member of the <strong>${responses.varsity_team}</strong> team, consider connecting with upperclassmen for additional support and guidance.</p>`;
 			}
 		}
-
 		// Social Life and Events (If "Social life" is the top priority)
 		if (
 			responses.priority === 'Social life' &&
 			responses.social_interests &&
 			responses.social_interests.length > 0
 		) {
-			plan += `<h3> Social Life & Events </h3>`;
+			plan += `<h3>Social Life and Events</h3>`;
 			responses.social_interests.forEach((interest) => {
 				if (socialLifeOptions[interest]) {
 					plan += `<p>${socialLifeOptions[interest]}</p>`;
 				}
 			});
 		}
-
 		// Extracurricular Recommendations (If "Extracurriculars" is the top priority)
 		if (responses.priority === 'Extracurriculars' && responses.hobbies && responses.hobbies.length > 0) {
-			plan += `<h3> Extracurricular Recommendations </h3>`;
+			plan += `<h3>Extracurricular Recommendations</h3>`;
 			plan += `<p>Based on your interests in <strong>${responses.hobbies.join(
 				', '
 			)}</strong>, we recommend the following clubs and organizations:</p>`;
-
 			// Display clubs based on each selected hobby category
 			responses.hobbies.forEach((hobbyCategory) => {
 				if (extracurricularClubs[hobbyCategory]) {
@@ -112,21 +108,17 @@ export const useAIAdvice = () => {
 				}
 			});
 		}
-
 		// Always include hobbies and other interests, even if not prioritized
 		if (responses.hobbies && responses.hobbies.length > 0) {
 			const uniqueHobbies = [...new Set(responses.hobbies)]; // Remove duplicates
-			plan += `<h3> Secondary Interests </h3>`;
-			plan += `<p> While your top priority is ${responses.priority}, don't forget to explore other interests when you have the time! Here are some clubs based on your hobbies:</p>`;
-
+			plan += `<h3>Secondary Interests</h3>`;
+			plan += `<p>While your top priority is ${responses.priority}, don't forget to explore other interests when you have the time! Here are some clubs based on your hobbies:</p>`;
 			uniqueHobbies.forEach((hobbyCategory) => {
 				if (extracurricularClubs[hobbyCategory]) {
 					// Shuffle the array to get random clubs
 					const shuffledClubs = extracurricularClubs[hobbyCategory].sort(() => 0.5 - Math.random());
-
 					// Select the first 2 clubs from the shuffled array
 					const selectedClubs = shuffledClubs.slice(0, 2);
-
 					plan += `<h4>${hobbyCategory} Clubs</h4>`;
 					plan += `<ul>${selectedClubs
 						.map((club) => `<li><strong>${club.name}</strong>: ${club.description}</li>`)
@@ -134,10 +126,9 @@ export const useAIAdvice = () => {
 				}
 			});
 		}
-
 		// Summary
 		if (responses.priority) {
-			plan += `<h3> Summary </h3>`;
+			plan += `<h3>Summary</h3>`;
 			switch (responses.priority) {
 				case 'Courses':
 					plan += `<p>Since your priority is courses, we recommend focusing on getting the best academic experiences and taking advantage of department resources.</p>`;
@@ -155,9 +146,8 @@ export const useAIAdvice = () => {
 					break;
 			}
 		}
-
 		// Set the generated plan
-		return plan
+		setGeneratedPlan(plan);
 	};
 
 	// AI advice generation function
@@ -230,7 +220,7 @@ export const useAIAdvice = () => {
 		} finally {
 			setIsRevising(false);
 			// clear the revision input after use
-			setReviseInput('')
+			setReviseInput('');
 		}
 	};
 
@@ -242,6 +232,6 @@ export const useAIAdvice = () => {
 		revisePlan,
 		reviseInput,
 		setReviseInput,
-		isRevising
+		isRevising,
 	};
 };

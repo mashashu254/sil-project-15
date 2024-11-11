@@ -3,5 +3,6 @@ src/api_key.js
 nohup.out
 package-lock.json
 issues.txt
-src/assets/concepts/
+public/assets/concepts/
 formatTempPlan.js
+.env
